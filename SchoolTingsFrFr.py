@@ -306,25 +306,29 @@ def adminRemove(catalog):
     catalog = file.readlines()
     file.close()
 
-    print(catalog)
     remove= int(input("Input Code"))
     catalog.pop(remove - 1)
+    
+    parsed = map(parse, catalog)
+    parsedCatalog = catalogFromParsed(parsed)
 
-    newCatalog = ""
+    newKey = 1
+    newCatalogDict = dict()
 
-    for items in catalog:
-        newCatalog += items
+    for itemTuple in parsedCatalog.items():
+        item = itemTuple[1]
+        item["num"] = newKey
+        newCatalogDict[newKey] = item
+        newKey+=1
 
-    file = open("catalog.txt", 'w')
-    file.write(newCatalog)
-    file.close()
+    updateCatalog(newCatalogDict)
 
     adminRemove_YN = str(input("Remove another item? (Y/N)"))
 
     if adminRemove_YN == "y" or adminRemove_YN == "Y":
-        adminRemove(catalog)
+        adminRemove(newCatalogDict)
     else:
-        setting(catalog)
+        setting(newCatalogDict)
 
 def adminChange(catalog):
 
@@ -381,12 +385,16 @@ def readCatalog():
     text = openMe.readlines()
     openMe.close()
     test = map(parse, text)
-    catalog = dict()
-
-    for v in test:
-        catalog[v["num"]] = v
+    catalog = catalogFromParsed(test)
 
     return catalog
+
+def catalogFromParsed(parsed):
+    catalog = dict()
+    for v in parsed:
+        catalog[v["num"]] = v
+    return catalog
+
 
 def updateCatalog(newCatalog):
     productDictionaryList = newCatalog.items()
