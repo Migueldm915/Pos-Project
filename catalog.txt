@@ -1,0 +1,10 @@
+1,12,Pencil,7
+2,5,Eraser,8
+3,2,Paper,10
+4,8,Ballpen,11
+5,25,Notebook,4
+6,30,Pencil Case,5
+7,25,Crayons,6
+8,15,Scissors,4
+9,7,Sharpener,5
+10,15,Highlighter,4
