@@ -106,7 +106,7 @@ def addItem(catalog, cart, cartCounter):
     try:
         item = catalog[itemCode]["num"]
         price = catalog[itemCode]["price"]
-        cart[cartCounter + 1] = {"price":price, "key":item}
+        cart[cartCounter + 1] = {"price":price, "key":item, "item_code": itemCode}
         cartCounter += 1
 
     except KeyError:
@@ -164,6 +164,9 @@ def checkOut(catalog, cart, cartCounter):
         key = items[1]['key']
         cartItem = cart[key]
         cartPrice = cartItem["price"]
+        cartItemCode = cartItem["item_code"]
+        currentCatalogItemQty = catalog[cartItemCode]["qty"]
+        catalog[cartItemCode]["qty"] = currentCatalogItemQty - 1
         total += int(cartPrice)
 
     print(f"The total is {total} Php.")
@@ -172,14 +175,13 @@ def checkOut(catalog, cart, cartCounter):
     change = 0
     if amount >= total:
         change = amount - total
+        updateCatalog(catalog)
         print(f"Your change is {change} Php")
 
     else:
         print("insufficient amount")
         checkOut(catalog, cart, cartCounter)
 
-
-    print("Mag uupdate yung file") #AAYUSIN PA TO
 
     purchase_YN = str(input("Make another purchase? (Y/N): "))
 
